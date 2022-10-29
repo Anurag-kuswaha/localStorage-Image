@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h1 class="page-heading" style="text-align:center"> A simple web app to store image in browser local storage and show on web page</h1>
+  <div style="display: flex;justify-content: space-around;">
+    <div>
+      <label for="img">Add image:</label>
+      <input type="input" id="submit-img" name="img" >
+      <input type="submit" id="submit" onclick="ImageSubmit()">
+    </div>
+    <div>
+      <label for="remove-img">Remove image:</label>
+  <input type="input" id="remove-img" name="remove-img" >
+  <input type="submit" onclick="removeImageSubmit()">
+    </div>
+ 
+  
+  
+</div>
+        <div id="app">  
+                <ul id="myList"></ul>
+    
+        </div>
+<script>
+
+    var collected = []
+
+//collected images go to localstorage. If user comes back.. the items in localstorage needs to be checked but if same items exists, they need to get removed from collectde array...also a way to update the collected array if an item is removed..the array should update
+// for (let i = 0; i < wholeImages.length; i++) {
+//   var existing = localStorage.getItem('key');
+//   collected.push({
+//     name: wholeImages[i]
+//   });
+
+// }
+
+// console.log(collected);
+// localStorage.setItem('key', JSON.stringify(collected));
+// let data = collected;
+
+
+
+// for (let i = 0; i < wholeImages.length; i++) {
+//   var existing = localStorage.getItem('key');
+//   collected.push({
+//     name: wholeImages[i]
+//   });
+
+// }
+// function to retrieve image if present in local storage;
+const getFromLocalStorage = () =>{
+  var localStoredImage = localStorage.getItem('collected-image')? JSON.parse(localStorage.getItem('collected-image')): []; // keeping the name of local storage as collected-image
+  return localStoredImage;
+}
+
+// function to set image in local storage if  user submit any image;
+const setInLocalStorage = () =>{
+  var localStoredImageParse = localStorage.getItem('collected-image'); // keeping the name of local storage as collected-image
+  var localStoredImage = JSON.parse(localStorageData_); // converts to an array ; 
+  if(localStoredImage){
+    collected = localStoredImage;
+    //call createstyle function;
+    createStyle(collected)
+  }
+}
+// function to remove image in local storage if  user remove any image;
+const removeFromLocalStorage = () =>{
+  var localStoredImageParse = localStorage.getItem('collected-image'); // keeping the name of local storage as collected-image
+  var localStoredImage = JSON.parse(localStorageData_); // converts to an array ; 
+  if(localStoredImage){
+    collected = localStoredImage;
+    //call createstyle function;
+    createStyle(collected)
+  }
+}
+
+const createStyle = (collected) => {
+  if(!collected) return;
+  const getStyleContainer = document.getElementById("myList");
+  getStyleContainer.innerHTML = '';
+  collected.forEach((style) => {
+    console.log('style is', style);
+    const styleDiv = createElem("div", "style"); // calling createElem function
+   
+    getStyleContainer.appendChild(styleDiv);
+    const styleImage = createElem("img", "myImg-style");
+    styleImage.src = style;
+    styleDiv.appendChild(styleImage);
+  });
+};
+// for creating an elemnt
+function createElem(tagName, className) {
+  const element = document.createElement(tagName);
+  element.setAttribute("class", className);
+  return element;
+}
+const ImageSubmit = () => {
+  var currentImage = document.getElementById("submit-img").value;
+  console.log('current submit image is ', currentImage)
+   var localStorageImage = getFromLocalStorage();
+   console.log('local storage is ', localStorageImage)
+   // check image exists or not;
+   if(!localStorageImage.includes(currentImage)){
+    localStorageImage.push(currentImage);
+    // update the local storage:
+    localStorage.setItem('collected-image',JSON.stringify(localStorageImage));
+   }
+   // create new style 
+   createStyle(localStorageImage);
+   
+};
+
+const removeImageSubmit = () => {
+  var currentImage = document.getElementById("remove-img").value;
+   var localStorageImage = getFromLocalStorage();
+   // check image exists or not;
+   localStorageImage = localStorageImage.filter ( (localImg) =>{
+    return localImg != currentImage;
+   });
+    // update the local storage:
+    localStorage.setItem('collected-image',JSON.stringify(localStorageImage));
+   // create new style 
+   createStyle(localStorageImage);
+   
+};
+// when page load retrieve and show all the images from the local storage;
+const onPageLoadShowFromLocalStorage = () => {
+  var localStorageImage = getFromLocalStorage();
+  createStyle(localStorageImage);
+  return;
+   
+};
+const CSS_COLOR_NAMES = [
+  "AliceBlue",
+  "AntiqueWhite",
+  "Aqua",
+  "Aquamarine",
+  "Azure",
+  "Beige",
+  "Bisque",
+  "Black",
+  "BlanchedAlmond",
+  "Blue",
+  "BlueViolet",
+  "Brown",
+  "BurlyWood",
+  "CadetBlue",
+  "Chartreuse",
+  "Chocolate",
+  "Coral",
+  "CornflowerBlue",
+  "Cornsilk",
+  "Crimson",
+  "Cyan",
+  "DarkBlue",
+  "DarkCyan",
+  "DarkGoldenRod",
+  "DarkGray",
+  "DarkGrey",
+  "DarkGreen",
+  "DarkKhaki",
+  "DarkMagenta",
+  "DarkOliveGreen",
+  "DarkOrange",
+  "DarkOrchid",
+  "DarkRed",
+  "DarkSalmon",
+  "DarkSeaGreen",
+  "DarkSlateBlue",
+  "DarkSlateGray",
+  "DarkSlateGrey",
+  "DarkTurquoise",
+  "DarkViolet",
+  "DeepPink",
+  "DeepSkyBlue",
+  "DimGray",
+  "DimGrey",
+  "DodgerBlue",
+  "FireBrick",
+  "FloralWhite",
+  "ForestGreen",
+  "Fuchsia",
+  "Gainsboro",
+  "GhostWhite",
+  "Gold",
+  "GoldenRod",
+  "Gray",
+  "Grey",
+  "Green",
+  "GreenYellow",
+  "HoneyDew",
+  "HotPink",
+  "IndianRed",
+  "Indigo",
+  "Ivory",
+  "Khaki",
+  "Lavender",
+  "LavenderBlush",
+  "LawnGreen",
+  "LemonChiffon",
+  "LightBlue",
+  "LightCoral",
+  "LightCyan",
+  "LightGoldenRodYellow",
+  "LightGray",
+  "LightGrey",
+  "LightGreen",
+  "LightPink",
+  "LightSalmon",
+  "LightSeaGreen",
+  "LightSkyBlue",
+  "LightSlateGray",
+  "LightSlateGrey",
+  "LightSteelBlue",
+  "LightYellow",
+  "Lime",
+  "LimeGreen",
+  "Linen",
+  "Magenta",
+  "Maroon",
+  "MediumAquaMarine",
+  "MediumBlue",
+  "MediumOrchid",
+  "MediumPurple",
+  "MediumSeaGreen",
+  "MediumSlateBlue",
+  "MediumSpringGreen",
+  "MediumTurquoise",
+  "MediumVioletRed",
+  "MidnightBlue",
+  "MintCream",
+  "MistyRose",
+  "Moccasin",
+  "NavajoWhite",
+  "Navy",
+  "OldLace",
+  "Olive",
+  "OliveDrab",
+  "Orange",
+  "OrangeRed",
+  "Orchid",
+  "PaleGoldenRod",
+  "PaleGreen",
+  "PaleTurquoise",
+  "PaleVioletRed",
+  "PapayaWhip",
+  "PeachPuff",
+  "Peru",
+  "Pink",
+  "Plum",
+  "PowderBlue",
+  "Purple",
+  "RebeccaPurple",
+  "Red",
+  "RosyBrown",
+  "RoyalBlue",
+  "SaddleBrown",
+  "Salmon",
+  "SandyBrown",
+  "SeaGreen",
+  "SeaShell",
+  "Sienna",
+  "Silver",
+  "SkyBlue",
+  "SlateBlue",
+  "SlateGray",
+  "SlateGrey",
+  "Snow",
+  "SpringGreen",
+  "SteelBlue",
+  "Tan",
+  "Teal",
+  "Thistle",
+  "Tomato",
+  "Turquoise",
+  "Violet",
+  "Wheat",
+  "White",
+  "WhiteSmoke",
+  "Yellow",
+  "YellowGreen",
+];
+const changeHeadingColor = (colorNumber) =>{
+  document.querySelector('.page-heading').style.color= CSS_COLOR_NAMES[colorNumber];
+  return;
+}
+window.onload = () => {
+  onPageLoadShowFromLocalStorage();
+  var colorNumber = 0;
+  setInterval( ()=>{changeHeadingColor(colorNumber++%CSS_COLOR_NAMES.length)}, 1000);
+
+};
+</script>
+</body>
+</html>
